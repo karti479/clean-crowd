@@ -1,8 +1,10 @@
 // app/api/auth/[...nextauth]/route.ts
+"use client";
+
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
-import prisma from "@/lib/prisma";
+import prisma from "../../../lib/prisma";
 
 export const authOptions = {
   providers: [

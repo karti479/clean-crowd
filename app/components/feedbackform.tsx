@@ -1,4 +1,6 @@
 // /app/components/FeedbackForm.tsx
+"use client";
+
 import { useState } from 'react'
 
 interface FeedbackFormProps {

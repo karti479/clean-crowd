@@ -1,4 +1,6 @@
 // /app/components/PostForm.tsx
+"use client";
+
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { Map } from './map'

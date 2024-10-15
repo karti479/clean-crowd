@@ -4,7 +4,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import React from 'react'
 
 export default function SignUp() {
   const [name, setName] = useState('')

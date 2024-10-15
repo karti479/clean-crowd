@@ -1,5 +1,7 @@
 // /app/components/Map.tsx
-import { useEffect, useRef } from 'react'
+"use client";
+
+import { useEffect, useRef, useCallback } from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
 
 interface MapProps {
@@ -8,6 +10,11 @@ interface MapProps {
 
 export function Map({ onLocationSelect }: MapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
+
+  // Define a serializable callback
+  const handleLocationSelect = useCallback((lat: number, lng: number) => {
+    onLocationSelect(lat, lng);
+  }, [onLocationSelect]); // Add onLocationSelect as a dependency
 
   useEffect(() => {
     const loader = new Loader({
@@ -24,12 +31,12 @@ export function Map({ onLocationSelect }: MapProps) {
 
         map.addListener('click', (e: google.maps.MapMouseEvent) => {
           if (e.latLng) {
-            onLocationSelect(e.latLng.lat(), e.latLng.lng())
+            handleLocationSelect(e.latLng.lat(), e.latLng.lng())
           }
         })
       }
     })
-  }, [onLocationSelect])
+  }, [handleLocationSelect]) // Update dependency to the new function
 
   return <div ref={mapRef} style={{ width: '100%', height: '400px' }} />
 }
