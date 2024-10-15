@@ -11,7 +11,7 @@ export default function Header() {
     <header className="bg-teal-600 text-white shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2">
-          <Image src="/logo.svg" alt="CleanStreets India Logo" width={40} height={40} />
+          <Image src="/logo.png" alt="CleanStreets India Logo" width={40} height={40} />
           <span className="text-2xl font-bold">CleanStreets India</span>
         </Link>
         <nav>
