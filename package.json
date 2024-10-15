@@ -9,7 +9,7 @@
     "lint": "next lint",
     "clean": "rimraf node_modules && npm install",
     "test": "jest",
-    "postinstall": "prisma generate" 
+    "postinstall": "prisma generate && prisma migrate deploy" 
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.670.0",
