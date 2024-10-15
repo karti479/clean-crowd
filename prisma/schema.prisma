@@ -1,0 +1,60 @@
+// prisma/schema.prisma
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  email     String     @unique
+  password  String
+  posts     Post[]
+  bids      Bid[]
+  feedbacks Feedback[]
+}
+
+model Post {
+  id             String     @id @default(cuid())
+  location       String
+  description    String
+  estimatedCost  Float
+  currentFunding Float      @default(0)
+  imageUrl       String
+  status         String
+  latitude       Float
+  longitude      Float
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  userId         String
+  user           User       @relation(fields: [userId], references: [id])
+  bids           Bid[]
+  feedbacks      Feedback[]
+}
+
+model Bid {
+  id        String   @id @default(cuid())
+  amount    Float
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  rating    Int
+  comment   String
+  createdAt DateTime @default(now())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
