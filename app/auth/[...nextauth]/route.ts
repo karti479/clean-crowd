@@ -1,5 +1,5 @@
 // app/api/auth/[...nextauth]/route.ts
-"use client";
+// "use client";
 
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";

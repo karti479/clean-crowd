@@ -8,7 +8,7 @@ import PostForm from '../components/postform'
 
 export default function CreatePost() {
   const router = useRouter()
-  const { status } = useSession() // Removed session as it's not used
+  const { data: session, status } = useSession()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -22,6 +22,11 @@ export default function CreatePost() {
   }
 
   const handleSubmit = async (formData: FormData) => {
+    if (!session) {
+      setError('You must be logged in to create a post')
+      return
+    }
+
     setIsSubmitting(true)
     setError('')
 
@@ -38,7 +43,8 @@ export default function CreatePost() {
         const errorData = await response.json()
         setError(errorData.error || 'Failed to create post. Please try again.')
       }
-    } catch { // Removed 'err' as it's not used
+    } catch (err) {
+      console.error(err)
       setError('An error occurred. Please try again.')
     } finally {
       setIsSubmitting(false)

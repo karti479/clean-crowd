@@ -1,9 +1,8 @@
 // /app/components/PostForm.tsx
 "use client";
 
-import { useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { Map } from './map'
+import { useState } from 'react'
 
 interface PostFormProps {
   onSubmit: (formData: FormData) => Promise<void>
@@ -11,24 +10,22 @@ interface PostFormProps {
 }
 
 export default function PostForm({ onSubmit, isSubmitting }: PostFormProps) {
-  const { data: session } = useSession()
-  const [location, setLocation] = useState('')
-  const [description, setDescription] = useState('')
-  const [estimatedCost, setEstimatedCost] = useState('')
-  const [image, setImage] = useState<File | null>(null)
-  const [latitude, setLatitude] = useState(0)
-  const [longitude, setLongitude] = useState(0)
+  // Remove the session check from here as it's handled in the parent component
+  // ... rest of the component remains the same
+
+  const [location, setLocation] = useState('');
+  const [description, setDescription] = useState('');
+  const [estimatedCost, setEstimatedCost] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+  const [longitude, setLongitude] = useState(0);
+  const [image, setImage] = useState<File | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (!session) {
-      alert('You must be logged in to create a post')
-      return
-    }
     const formData = new FormData()
-    formData.append('location', location)
+    formData.append('location', location.toString()) // Ensure location is a string
     formData.append('description', description)
-    formData.append('estimatedCost', estimatedCost)
+    formData.append('estimatedCost', estimatedCost.toString()) // Ensure estimatedCost is a string
     formData.append('latitude', latitude.toString())
     formData.append('longitude', longitude.toString())
     if (image) {
@@ -84,7 +81,7 @@ export default function PostForm({ onSubmit, isSubmitting }: PostFormProps) {
           type="number"
           placeholder="Enter estimated cost"
           value={estimatedCost}
-          onChange={(e) => setEstimatedCost(e.target.value)}
+          onChange={(e) => setEstimatedCost(Number(e.target.value))} // Convert string to number
           required
         />
       </div>
