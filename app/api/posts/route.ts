@@ -1,4 +1,3 @@
-// /app/api/posts/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth/next'; // Updated import path
@@ -16,11 +15,22 @@ interface ExtendedSession extends Session {
   };
 }
 
-export async function GET() {
-  const posts = await prisma.post.findMany({
-    include: { user: true, bids: true },
-    orderBy: { createdAt: 'desc' },
-  });
+export async function GET() { // Removed request parameter
+  const session = await getServerSession(authOptions) as ExtendedSession;
+
+  let posts;
+  if (session && session.user && session.user.id) {
+    // Fetch only posts created by the logged-in user
+    posts = await prisma.post.findMany({
+      where: { userId: session.user.id },  // Filter posts by userId
+      include: { user: true, bids: true },
+      orderBy: { createdAt: 'desc' },
+    });
+  } else {
+    // Return an error if the user is not authenticated
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
   return NextResponse.json(posts);
 }
 

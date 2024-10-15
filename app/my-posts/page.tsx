@@ -1,28 +1,35 @@
-// /app/my-posts.tsx
+// /app/my-posts/page.tsx
 "use client"
 
 import { useState, useEffect } from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { Post } from '@/lib/types'
 import PostCard from '../components/postcard'
 
 export default function MyPosts() {
   const [posts, setPosts] = useState<Post[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const { status } = useSession() // Removed session since it's not used
+  const router = useRouter()
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      // In a real app, this would fetch only the user's posts
-      const response = await fetch('/api/posts')
-      if (response.ok) {
-        const data = await response.json()
-        setPosts(data)
+    if (status === 'unauthenticated') {
+      router.push('/login')
+    } else if (status === 'authenticated') {
+      const fetchPosts = async () => {
+        const response = await fetch('/api/posts/my-posts')
+        if (response.ok) {
+          const data = await response.json()
+          setPosts(data)
+        }
+        setIsLoading(false)
       }
-      setIsLoading(false)
+      fetchPosts()
     }
-    fetchPosts()
-  }, [])
+  }, [status, router])
 
-  if (isLoading) {
+  if (status === 'loading' || isLoading) {
     return <div className="container mx-auto px-4 py-8">Loading...</div>
   }
 
@@ -36,7 +43,7 @@ export default function MyPosts() {
           ))}
         </div>
       ) : (
-        <p>You haven not reported any issues yet.</p>
+        <p>You have not reported any issues yet.</p>
       )}
     </div>
   )

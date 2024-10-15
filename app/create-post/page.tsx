@@ -1,13 +1,24 @@
-// /app/create-post.tsx
+// /app/create-post/page.tsx
 "use client"
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import PostForm from '../components/postform'
 
 export default function CreatePost() {
   const router = useRouter()
+  const { status } = useSession() // Removed session as it's not used
   const [isSubmitting, setIsSubmitting] = useState(false)
+
+  if (status === 'loading') {
+    return <div>Loading...</div>
+  }
+
+  if (status === 'unauthenticated') {
+    router.push('/login')
+    return null
+  }
 
   const handleSubmit = async (formData: FormData) => {
     setIsSubmitting(true)

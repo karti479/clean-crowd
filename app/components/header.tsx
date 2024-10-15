@@ -1,12 +1,11 @@
 // /app/components/Header.tsx
-"use client"; // Ensure this is the first line
-
+"use client"; // Added this line to make the component a Client Component
 import Link from 'next/link'
 import Image from 'next/image'
 import { useSession, signOut } from 'next-auth/react'
 
 export default function Header() {
-  const { data: session } = useSession() // This should now work correctly
+  const { data: session } = useSession()
 
   return (
     <header className="bg-teal-600 text-white shadow-md">
@@ -26,7 +25,10 @@ export default function Header() {
                 <li><button onClick={() => signOut()} className="hover:text-teal-200">Logout</button></li>
               </>
             ) : (
-              <li><Link href="/api/auth/signin" className="hover:text-teal-200">Login</Link></li>
+              <>
+                <li><Link href="/login" className="hover:text-teal-200">Login</Link></li>
+                <li><Link href="/signup" className="hover:text-teal-200">Sign Up</Link></li>
+              </>
             )}
           </ul>
         </nav>
