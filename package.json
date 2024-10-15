@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.670.0",
+    "@google-cloud/storage": "^7.13.0",
     "@googlemaps/js-api-loader": "^1.16.8",
     "@prisma/client": "^5.20.0",
     "@stripe/react-stripe-js": "^2.8.1",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
+    "@types/google-cloud__storage": "^1.7.2",
     "@types/google.maps": "^3.58.1",
     "@types/node": "^20.16.11",
     "@types/react": "^18.3.11",
