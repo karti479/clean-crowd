@@ -21,6 +21,7 @@ declare module 'next-auth' {
 export async function POST(request: NextRequest) {
   // Ensure the session is populated correctly
   const session = await getServerSession(authOptions) as Session; // Cast to Session type
+  console.log('Session:', session); // Log the session to inspect its contents
 
   if (!session || !session.user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -38,6 +39,10 @@ export async function POST(request: NextRequest) {
     // Implement actual image upload logic
     const imageUrl = await uploadImage(image); // Use the 'image' variable here for uploading
 
+    // Ensure userId is set correctly
+    const userId = session.user.id; // Get userId from session
+    console.log('User ID:', userId); // Log the userId to ensure it's defined
+
     const newPost = await prisma.post.create({
       data: {
         location,
@@ -48,7 +53,7 @@ export async function POST(request: NextRequest) {
         imageUrl,
         status: 'pending',
         currentFunding: 0,
-        userId: session.user.id,
+        userId, // Ensure userId is set here
       },
     })
 
